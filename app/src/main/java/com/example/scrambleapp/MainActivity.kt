@@ -1,49 +1,51 @@
 package com.example.scrambleapp
 
+import android.R
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.scrambleapp.ui.theme.ScrambleAppTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            ScrambleAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            Column{
+                MessageCard("ScramblerApp")
+                Text("You can encrypt your texts Here!")
+                Image(
+                    painter = painterResource(R.drawable.encryptpic),
+                    contentDescription = "Contact profile picture",
+                )
             }
         }
-
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Scrambler App",
-        modifier = modifier
-    )
+fun MessageCard(name: String) {
+    Text(text = "Welcome to the $name!")
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun GreetingPreview() {
-    ScrambleAppTheme {
-        Greeting("Android")
+fun PreviewMessageCard() {
+    Column{
+        MessageCard("ScramblerApp")
+        Text("You can encrypt your texts Here!")
+        Image(
+            painter = painterResource(R.drawable.encryptpic),
+            contentDescription = "Contact profile picture",
+        )
+        /*Button(onClick= { /* Handle button click */ }) {
+            Text("Click me")
+        }*/
     }
 }
