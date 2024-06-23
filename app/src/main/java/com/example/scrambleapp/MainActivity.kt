@@ -17,6 +17,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -35,53 +37,40 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ScrambleAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                var count = remember{
+                    mutableStateOf(0)
+                }
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ){
+                    Text(
+                        text = "Scrambler App",
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .padding(10.dp)
                     )
+                    Text(
+                        text = "by Kaleab Beteselassie",
+                        fontSize = 10.sp,
+                        modifier = Modifier
+                            .padding(10.dp)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.binary),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Text(
+                        text = count.value.toString()
+                    )
+                    Button(onClick = {
+                        count.value++
+                    }){
+                        Text(text = "Click Me!")
+                    }
                 }
             }
         }
 
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ){
-        Text(
-            text = "Scrambler App",
-            fontSize = 30.sp,
-            modifier = Modifier
-                .padding(10.dp)
-        )
-        Text(
-            text = "by Kaleab Beteselassie",
-            fontSize = 10.sp,
-            modifier = Modifier
-                .padding(10.dp)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.binary),
-            contentDescription = null,
-            contentScale = ContentScale.FillWidth
-        )
-        Text(text = "0")
-        Button(onClick = {
-
-        }){
-            Text(text = "Click Me!")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ScrambleAppTheme {
-        Greeting("Android")
     }
 }
