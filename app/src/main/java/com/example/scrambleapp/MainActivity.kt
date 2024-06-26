@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.example.scrambleapp.ui.theme.ScrambleAppTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.TextStyle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class MainActivity : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ){
                     Text(
-                        text = "Scrambler App",
+                        text = "ToDo List",
                         fontSize = 30.sp,
                         modifier = Modifier
                             .padding(10.dp)
@@ -72,18 +73,33 @@ class MainActivity : ComponentActivity() {
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ){
+                        Button(onClick = {
+                            names = names.dropLast(1)
+                        }){
+                            Text(
+                                text = "-",
+                                style = TextStyle(fontSize = 15.sp),
+                                modifier = Modifier.padding(1.dp)
+                            )
+                        }
                         OutlinedTextField(
                             value = name,
                             onValueChange = {
                                     text -> name = text
-                            }
+                            },
+                            modifier = Modifier.width(260.dp)
                         )
                         Button(onClick = {
                             if(name.isNotBlank()){
                                 names = names + name
+                                name = ""
                             }
                         }){
-                            Text(text = "Add")
+                            Text(
+                                text = "+",
+                                style = TextStyle(fontSize = 15.sp),
+                                modifier = Modifier.padding(1.dp)
+                                )
                         }
                     }
                     LazyColumn{
