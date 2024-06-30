@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.example.scrambleapp.ui.theme.ScrambleAppTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.ui.text.TextStyle
 
 class MainActivity : ComponentActivity() {
@@ -104,7 +105,22 @@ class MainActivity : ComponentActivity() {
                     }
                     LazyColumn{
                         items(names){ currentName ->
-                            Text(text = currentName)
+                            Text(
+                                text = currentName,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                            )
+                            Button(
+                                onClick = {}
+                            ) {
+                                Text(
+                                    text = "X",
+                                    style = TextStyle(fontSize = 15.sp),
+                                    modifier = Modifier.padding(1.dp)
+                                )
+                            }
+                            Divider()
                         }
                     }
                 }
