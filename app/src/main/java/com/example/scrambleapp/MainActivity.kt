@@ -7,11 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,12 +43,17 @@ import androidx.compose.ui.unit.sp
 import com.example.scrambleapp.ui.theme.ScrambleAppTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -59,68 +67,75 @@ class MainActivity : ComponentActivity() {
                 Column (
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ){
-                    Text(
-                        text = "ToDo List",
-                        fontSize = 30.sp,
-                        modifier = Modifier
-                            .padding(10.dp)
-                    )
-                    Text(
-                        text = "by Kaleab Beteselassie",
-                        fontSize = 10.sp,
-                        modifier = Modifier
-                            .padding(10.dp)
-                    )
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = "ToDo List:",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .padding(top = 30.dp, start = 10.dp)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
                     ){
-                        Button(onClick = {
-                            names = names.dropLast(1)
-                        }){
-                            Text(
-                                text = "-",
-                                style = TextStyle(fontSize = 15.sp),
-                                modifier = Modifier.padding(1.dp)
-                            )
-                        }
                         OutlinedTextField(
                             value = name,
                             onValueChange = {
-                                    text -> name = text
+                                text -> name = text
                             },
-                            modifier = Modifier.width(260.dp)
+                            Modifier
+                                .fillMaxWidth(0.75f)
+                                .padding(10.dp),
                         )
                         Button(onClick = {
-                            if(name.isNotBlank()){
-                                names = names + name
-                                name = ""
-                            }
-                        }){
+                                    if(name.isNotBlank()){
+                                        names = names + name
+                                        name = ""
+                                    }
+                                },
+                                shape = RoundedCornerShape(8.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.LightGray
+                                ),
+                                modifier = Modifier.padding(10.dp).offset(x = -10.dp, y = 0.dp)
+                        ){
                             Text(
                                 text = "+",
-                                style = TextStyle(fontSize = 15.sp),
-                                modifier = Modifier.padding(1.dp)
-                                )
+                                style = TextStyle(fontSize = 33.sp),
+                            )
                         }
+
                     }
                     LazyColumn{
                         items(names){ currentName ->
-                            Text(
-                                text = currentName,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            )
-                            Button(
-                                onClick = {}
-                            ) {
-                                Text(
-                                    text = "X",
-                                    style = TextStyle(fontSize = 15.sp),
-                                    modifier = Modifier.padding(1.dp)
-                                )
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxWidth(),
+                                ){
+                                    Text(
+                                        text = currentName,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp)
+                                    )
+                                    Button(onClick = {},
+                                        shape = RoundedCornerShape(8.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color.LightGray
+                                        ),
+                                    ){
+                                        Text(
+                                            text = "X",
+                                            style = TextStyle(fontSize = 5.sp),
+                                        )
+                                    }
+                                    Divider()
                             }
-                            Divider()
                         }
                     }
                 }
