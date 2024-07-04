@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -111,31 +112,41 @@ class MainActivity : ComponentActivity() {
                         }
 
                     }
-                    LazyColumn{
-                        items(names){ currentName ->
+                    LazyColumn {
+                        items(names) { currentName ->
+                            var clickedName by remember { mutableStateOf<String?>(null) }
+                            val isSelected = currentName == clickedName
+                            val backgroundColor = if (isSelected) Color.Yellow else Color.Transparent
+
                             Row(
-                                horizontalArrangement = Arrangement.Center,
-                                modifier = Modifier.fillMaxWidth(),
-                                ){
-                                    Text(
-                                        text = currentName,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { clickedName = currentName }
+                                    .background(backgroundColor)
+                                    .padding(16.dp),  // Optional: Add padding to the Row
+                                verticalAlignment = Alignment.CenterVertically,  // Center content vertically
+                                horizontalArrangement = Arrangement.SpaceBetween  // Space out the children
+                            ) {
+                                Text(
+                                    text = currentName,
+                                    modifier = Modifier
+                                        .weight(1f)  // Make Text take the remaining space
+                                        .padding(end = 16.dp)  // Optional: Add padding to the end of the Text
+                                )
+                                Button(
+                                    onClick = { names = names.filter { it != currentName } },
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.LightGray
                                     )
-                                    Button(onClick = {},
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = Color.LightGray
-                                        ),
-                                    ){
-                                        Text(
-                                            text = "X",
-                                            style = TextStyle(fontSize = 5.sp),
-                                        )
-                                    }
-                                    Divider()
+                                ) {
+                                    Text(
+                                        text = "X",
+                                        style = TextStyle(fontSize = 15.sp)
+                                    )
+                                }
                             }
+                            Divider()
                         }
                     }
                 }
