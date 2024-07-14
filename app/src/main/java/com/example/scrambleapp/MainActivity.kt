@@ -28,6 +28,10 @@ import com.example.scrambleapp.ui.theme.ScrambleAppTheme
 import kotlin.math.roundToInt
 import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.zIndex
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @Composable
 private fun DraggableRow(
@@ -40,20 +44,6 @@ private fun DraggableRow(
         modifier = Modifier
             .zIndex(if (offsetY != initialY) 1f else 0f)
             .offset { IntOffset(0, offsetY.roundToInt()) }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = {
-                        initialY = offsetY
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consumeAllChanges()
-                        offsetY += dragAmount.y
-                    },
-                    onDragEnd = {
-                        offsetY = initialY
-                    }
-                )
-            }
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF7A9E9F))
             .fillMaxWidth()
@@ -80,11 +70,11 @@ private fun DraggableRow(
         }
     }
 }
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+        var dateList by remember { mutableStateOf(listOf<String>()) }
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -184,6 +174,7 @@ class MainActivity : ComponentActivity() {
 //                    }
                     LazyColumn (modifier = Modifier.fillMaxSize()){
                         itemsIndexed(names) { index, currentName ->
+                            GetDateAndTime("Android")
                             DraggableRow(
                                 text = currentName,
                                 onRemove = {
@@ -212,3 +203,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Composable
+fun GetDateAndTime(date: String){
+    val calendar = Calendar.getInstance().time
+    val dateFormat = DateFormat.getDateInstance(DateFormat.FULL).format(calendar)
+
+    Row(){
+        Text(text = "$dateFormat")
+    }
+}
+
+
