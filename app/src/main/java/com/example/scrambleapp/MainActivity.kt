@@ -33,16 +33,19 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
+data class Task(
+    val date: String,
+    val name: String
+)
+
 @Composable
 private fun DraggableRow(
     text: String,
     onRemove: () -> Unit
 ) {
     var offsetY by remember { mutableStateOf(0f) }
-    var initialY by remember { mutableStateOf(0f) }
     Row(
         modifier = Modifier
-            .zIndex(if (offsetY != initialY) 1f else 0f)
             .offset { IntOffset(0, offsetY.roundToInt()) }
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF7A9E9F))
@@ -51,10 +54,10 @@ private fun DraggableRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Text(
             text = text,
-            modifier = Modifier.weight(1f).padding(end = 16.dp)
+            modifier = Modifier.weight(1f).padding(end = 16.dp),
+            color = Color.White
         )
         Button(
             onClick = { onRemove() },
@@ -62,30 +65,47 @@ private fun DraggableRow(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFFE5F55)
             ),
-            ) {
-                Text(
+        ) {
+            Text(
                 text = "X",
                 style = TextStyle(fontSize = 15.sp)
             )
         }
     }
 }
+
+@Composable
+fun TaskList(tasks: List<Task>, onRemove: (Task) -> Unit) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        itemsIndexed(tasks) { index, task ->
+            if (index == 0 || task.date != tasks[index - 1].date) {
+                Text(
+                    text = task.date,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    color = Color(0xFF4F6367)
+                )
+            }
+            DraggableRow(
+                text = task.name,
+                onRemove = { onRemove(task) }
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+        }
+    }
+}
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-        var dateList by remember { mutableStateOf(listOf<String>()) }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFEEF5DB))
-        )
             ScrambleAppTheme {
-
                 var name by remember { mutableStateOf("") }
-                var names by remember { mutableStateOf(listOf<String>()) }
-                var miniText1 by remember { mutableStateOf("") }
-                var miniText2 by remember { mutableStateOf("") }
+                var tasks by remember { mutableStateOf(listOf<Task>()) }
+                val currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().time)
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,7 +120,7 @@ class MainActivity : ComponentActivity() {
                             fontSize = 30.sp,
                             modifier = Modifier
                                 .padding(top = 30.dp, start = 10.dp),
-                                color = Color(0xFF4F6367)
+                            color = Color(0xFF4F6367)
                         )
                     }
                     Row(
@@ -117,7 +137,7 @@ class MainActivity : ComponentActivity() {
                         Button(
                             onClick = {
                                 if (name.isNotBlank()) {
-                                    names = names + name
+                                    tasks = tasks + Task(currentDate, name)
                                     name = ""
                                 }
                             },
@@ -136,81 +156,16 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.Center,
-//                    ) {
-//                        OutlinedTextField(
-//                            value = miniText1,
-//                            onValueChange = { text -> miniText1 = text },
-//                            modifier = Modifier
-//                                .weight(1f)
-//                                .padding(10.dp),
-//                        )
-////                        Button(
-////                            onClick = {
-////                                // Do something with miniText1 and miniText2
-////                            },
-////                            shape = RoundedCornerShape(8.dp),
-////                            colors = ButtonDefaults.buttonColors(
-////                                containerColor = Color(0xFF4F6367)
-////                            ),
-////                            modifier = Modifier
-////                                .padding(10.dp)
-////                        ) {
-////                            Text(
-////                                text = "Switch",
-////                                style = TextStyle(fontSize = 15.sp),
-////                                color = Color.White
-////                            )
-////                        }
-//                        OutlinedTextField(
-//                            value = miniText2,
-//                            onValueChange = { text -> miniText2 = text },
-//                            modifier = Modifier
-//                                .weight(1f)
-//                                .padding(10.dp),
-//                        )
-//                    }
-                    LazyColumn (modifier = Modifier.fillMaxSize()){
-                        itemsIndexed(names) { index, currentName ->
-                            GetDateAndTime("Android")
-                            DraggableRow(
-                                text = currentName,
-                                onRemove = {
-                                    names = names.toMutableList().apply {
-                                        removeAt(index)
-                                    }
-                                }
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth() // Fill the width of the Row
-                                        .height(5.dp) // Set a fixed height for the Box
-                                        .background(
-                                            color = Color(0xFFEEF5DB),
-                                        )
-                                )
+                    TaskList(
+                        tasks = tasks,
+                        onRemove = { task ->
+                            tasks = tasks.toMutableList().apply {
+                                remove(task)
                             }
                         }
-                    }
+                    )
                 }
             }
         }
     }
 }
-@Composable
-fun GetDateAndTime(date: String){
-    val calendar = Calendar.getInstance().time
-    val dateFormat = DateFormat.getDateInstance(DateFormat.FULL).format(calendar)
-
-    Row(){
-        Text(text = "$dateFormat")
-    }
-}
-
-
