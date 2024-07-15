@@ -1,5 +1,6 @@
 package com.example.scrambleapp
 
+import androidx.compose.ui.unit.sp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -48,27 +49,28 @@ private fun DraggableRow(
         modifier = Modifier
             .offset { IntOffset(0, offsetY.roundToInt()) }
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFF7A9E9F))
+            .background(Color(0xFF00BFFF))
             .fillMaxWidth()
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = text,
+            text = "* " + text,
             modifier = Modifier.weight(1f).padding(end = 16.dp),
-            color = Color.White
+            color = Color(0xFFFFFFFF),
+            style = TextStyle(fontSize = 30.sp)
         )
         Button(
             onClick = { onRemove() },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFE5F55)
+                containerColor = Color(0xFF00BFFF)
             ),
         ) {
             Text(
                 text = "X",
-                style = TextStyle(fontSize = 15.sp)
+                style = TextStyle(fontSize = 30.sp)
             )
         }
     }
@@ -86,7 +88,7 @@ fun TaskList(tasks: List<Task>, onRemove: (Task) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    color = Color(0xFF4F6367)
+                    color = Color(0xFF000000)
                 )
             }
             DraggableRow(
@@ -107,6 +109,10 @@ class MainActivity : ComponentActivity() {
                 var tasks by remember { mutableStateOf(listOf<Task>()) }
                 val currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().time)
 
+                Box(
+                    modifier = Modifier.fillMaxSize().background(Color(0xFF00BFFF))
+                ){}
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -115,12 +121,12 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            text = "ToDo List:",
+                            text = "TO DO LIST:",
                             fontWeight = FontWeight.Bold,
                             fontSize = 30.sp,
                             modifier = Modifier
                                 .padding(top = 30.dp, start = 10.dp),
-                            color = Color(0xFF4F6367)
+                            color = Color(0xFF0000FF)
                         )
                     }
                     Row(
@@ -143,7 +149,7 @@ class MainActivity : ComponentActivity() {
                             },
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF4F6367)
+                                containerColor = Color(0xFF0000ff)
                             ),
                             modifier = Modifier
                                 .padding(10.dp)
@@ -152,7 +158,7 @@ class MainActivity : ComponentActivity() {
                             Text(
                                 text = "+",
                                 style = TextStyle(fontSize = 33.sp),
-                                color = Color.White
+                                color = Color(0xFFFFFFFF)
                             )
                         }
                     }
