@@ -10,12 +10,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.scrambleapp.ui.theme.ScrambleAppTheme
 import kotlin.math.roundToInt
-import androidx.compose.ui.input.pointer.consumeAllChanges
-import androidx.compose.ui.zIndex
 import java.text.DateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.zIndex
+import androidx.compose.ui.Alignment
 
 data class Task(
     val date: String,
@@ -111,65 +109,101 @@ class MainActivity : ComponentActivity() {
 
                 Box(
                     modifier = Modifier.fillMaxSize().background(Color(0xFF00BFFF))
-                ){}
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth(),
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text(
-                            text = "TO DO LIST:",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 30.sp,
-                            modifier = Modifier
-                                .padding(top = 30.dp, start = 10.dp),
-                            color = Color(0xFF0000FF)
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        OutlinedTextField(
-                            value = name,
-                            onValueChange = { text -> name = text },
-                            modifier = Modifier
-                                .fillMaxWidth(0.75f)
-                                .padding(10.dp),
-                        )
-                        Button(
-                            onClick = {
-                                if (name.isNotBlank()) {
-                                    tasks = tasks + Task(currentDate, name)
-                                    name = ""
-                                }
-                            },
-                            shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF0000ff)
-                            ),
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .offset(x = -10.dp, y = 0.dp)
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             Text(
-                                text = "+",
-                                style = TextStyle(fontSize = 33.sp),
-                                color = Color(0xFFFFFFFF)
+                                text = "TO DO LIST:",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 30.sp,
+                                modifier = Modifier
+                                    .padding(top = 30.dp, start = 10.dp),
+                                color = Color(0xFF0000FF)
                             )
                         }
-                    }
-                    TaskList(
-                        tasks = tasks,
-                        onRemove = { task ->
-                            tasks = tasks.toMutableList().apply {
-                                remove(task)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(7.dp)
+                                .background(Color(0xFF00BFFF))
+                        ) {}
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .height(7.dp)
+                                .background(Color.White)
+                        ) {}
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(7.dp)
+                                .background(Color(0xFF00BFFF))
+                        ) {}
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            OutlinedTextField(
+                                value = name,
+                                onValueChange = { text -> name = text },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.75f)
+                                    .padding(10.dp),
+                            )
+                            Button(
+                                onClick = {
+                                    if (name.isNotBlank()) {
+                                        tasks = listOf(Task(currentDate, name)) + tasks
+                                        name = ""
+                                    }
+                                },
+                                shape = RoundedCornerShape(8.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF0000ff)
+                                ),
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .offset(x = -10.dp, y = 0.dp)
+                            ) {
+                                Text(
+                                    text = "+",
+                                    style = TextStyle(fontSize = 33.sp),
+                                    color = Color(0xFFFFFFFF)
+                                )
                             }
                         }
-                    )
+                        TaskList(
+                            tasks = tasks,
+                            onRemove = { task ->
+                                tasks = tasks.toMutableList().apply {
+                                    remove(task)
+                                }
+                            }
+                        )
+                    }
+                    // Footer
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFF0000FF))
+                            .padding(10.dp)
+                            .align(Alignment.BottomCenter)
+                    ) {
+                        Text(
+                            text = "Developer: Kaleab Beteselassie",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
         }
