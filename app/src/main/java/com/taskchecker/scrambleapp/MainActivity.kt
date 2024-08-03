@@ -91,14 +91,13 @@ fun TaskList(tasks: List<Task>, onRemove: (Task) -> Unit) {
         }
     }
 }
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ScrambleAppTheme {
                 var name by remember { mutableStateOf("") }
-                var tasks by remember { mutableStateOf(listOf<Task>()) }
+                var tasks by remember { mutableStateOf(PreferenceManager.getTasks(this)) }
                 val currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().time)
 
                 Box(
@@ -153,7 +152,9 @@ class MainActivity : ComponentActivity() {
                             Button(
                                 onClick = {
                                     if (name.isNotBlank()) {
-                                        tasks = listOf(Task(currentDate, name)) + tasks
+                                        val newTask = Task(currentDate, name)
+                                        tasks = listOf(newTask) + tasks
+                                        PreferenceManager.saveTasks(this@MainActivity, tasks)
                                         name = ""
                                     }
                                 },
@@ -178,6 +179,7 @@ class MainActivity : ComponentActivity() {
                                 tasks = tasks.toMutableList().apply {
                                     remove(task)
                                 }
+                                PreferenceManager.saveTasks(this@MainActivity, tasks)
                             }
                         )
                     }
@@ -203,3 +205,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
