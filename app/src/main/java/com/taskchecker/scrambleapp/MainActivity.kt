@@ -43,7 +43,7 @@ private fun DraggableRow(
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF00BFFF))
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(1.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -51,7 +51,7 @@ private fun DraggableRow(
             text = "* " + text,
             modifier = Modifier.weight(1f).padding(end = 16.dp),
             color = Color(0xFFFFFFFF),
-            style = TextStyle(fontSize = 30.sp)
+            style = TextStyle(fontSize = 20.sp)
         )
         Button(
             onClick = { onRemove() },
@@ -62,7 +62,7 @@ private fun DraggableRow(
         ) {
             Text(
                 text = "X",
-                style = TextStyle(fontSize = 30.sp)
+                style = TextStyle(fontSize = 15.sp)
             )
         }
     }
@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth(),
                         ) {
                             Text(
-                                text = "TO DO LIST:",
+                                text = "TASK CHECKER:",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 30.sp,
                                 modifier = Modifier
