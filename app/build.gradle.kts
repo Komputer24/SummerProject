@@ -5,18 +5,18 @@ plugins {
 
 android {
     // Change Version
-    namespace = "com.taskchecker2.scrambleapp"
+    namespace = "com.taskchecker3.scrambleapp"
     compileSdk = 34
 
     defaultConfig {
         // Change Version
-        applicationId = "com.taskchecker2.scrambleapp"
+        applicationId = "com.taskchecker3.scrambleapp"
         minSdk = 24
         targetSdk = 34
         // Change Version
-        versionCode = 2
+        versionCode = 3
         // Change Version
-        versionName = "2.0"
+        versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

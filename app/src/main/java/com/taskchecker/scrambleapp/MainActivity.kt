@@ -1,7 +1,5 @@
-// Change Version
 package com.taskchecker2.scrambleapp
 
-import androidx.compose.ui.unit.sp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,19 +10,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.taskchecker.scrambleapp.ui.theme.ScrambleAppTheme
-import kotlin.math.roundToInt
 import java.text.DateFormat
-import java.util.Calendar
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.Alignment
+import java.util.*
 
 data class Task(
     val date: String,
@@ -39,7 +37,7 @@ private fun DraggableRow(
     var offsetY by remember { mutableStateOf(0f) }
     Row(
         modifier = Modifier
-            .offset { IntOffset(0, offsetY.roundToInt()) }
+            .offset { IntOffset(0, offsetY.toInt()) }
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF00BFFF))
             .fillMaxWidth()
@@ -91,6 +89,7 @@ fun TaskList(tasks: List<Task>, onRemove: (Task) -> Unit) {
         }
     }
 }
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +100,9 @@ class MainActivity : ComponentActivity() {
                 val currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(Calendar.getInstance().time)
 
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Color(0xFF00BFFF))
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xFF00BFFF))
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -125,19 +126,19 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .height(7.dp)
                                 .background(Color(0xFF00BFFF))
-                        ) {}
+                        )
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth(0.9f)
                                 .height(7.dp)
                                 .background(Color.White)
-                        ) {}
+                        )
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(7.dp)
                                 .background(Color(0xFF00BFFF))
-                        ) {}
+                        )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
@@ -205,4 +206,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
