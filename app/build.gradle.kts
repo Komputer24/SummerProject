@@ -5,18 +5,18 @@ plugins {
 
 android {
     // Change Version
-    namespace = "com.taskchecker3.scrambleapp"
+    namespace = "com.taskchecker2.scrambleapp"
     compileSdk = 34
 
     defaultConfig {
         // Change Version
-        applicationId = "com.taskchecker3.scrambleapp"
+        applicationId = "com.taskchecker2.scrambleapp"
         minSdk = 24
         targetSdk = 34
         // Change Version
-        versionCode = 3
+        versionCode = 9
         // Change Version
-        versionName = "3.0"
+        versionName = "9.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -65,12 +65,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.benchmark.macro)
+    //implementation(libs.androidx.benchmark.macro)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    //androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
